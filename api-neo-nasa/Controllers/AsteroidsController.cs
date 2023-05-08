@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using api_neo_nasa.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,8 +16,8 @@ namespace api_neo_nasa.Controllers
         {
             this._mapper = mapper;
         }
-        //private readonly string API_KEY = "sODHDFXQESqJQXNkwuXbOcea3h0K1MX5ydKTvIwi";
-        private readonly string API_KEY = "DEMO_KEY";
+        private readonly string API_KEY = "sODHDFXQESqJQXNkwuXbOcea3h0K1MX5ydKTvIwi";
+        //private readonly string API_KEY = "DEMO_KEY";
         readonly string JSONDATA = @"{
     ""links"": {
         ""next"": ""http://api.nasa.gov/neo/rest/v1/feed?start_date=2021-12-12&end_date=2021-12-15&detailed=false&api_key=DEMO_KEY"",
@@ -4060,7 +4061,7 @@ namespace api_neo_nasa.Controllers
         {
             string endDate = DateTime.Today.AddDays(daysForEndDate).ToString("yyyy-MM-dd");
             string url = $"https://api.nasa.gov/neo/rest/v1/feed?start_date={DateTime.Today:yyyy-MM-dd}&end_date={endDate}&api_key={API_KEY}";
-            //El cliente lo implementaré cuando la api me funcione :) primero hago pruebas en local
+
             HttpClient client = new();
             var response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
