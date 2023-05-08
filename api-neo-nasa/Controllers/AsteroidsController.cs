@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
@@ -10,6 +11,10 @@ namespace api_neo_nasa.Controllers
     [Route("asteroids")]
     public class AsteroidsController : ControllerBase
     {
+        public AsteroidsController(IMapper mapper)
+        {
+            this._mapper = mapper;
+        }
         //private readonly string API_KEY = "sODHDFXQESqJQXNkwuXbOcea3h0K1MX5ydKTvIwi";
         private readonly string API_KEY = "DEMO_KEY";
         readonly string JSONDATA = @"{
@@ -4048,6 +4053,8 @@ namespace api_neo_nasa.Controllers
         ]
     }
 }";
+        private readonly IMapper _mapper;
+
         [HttpGet]
         public async Task<IActionResult> Get(int daysForEndDate)
         {
@@ -4059,10 +4066,9 @@ namespace api_neo_nasa.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var jsonData = await response.Content.ReadAsStringAsync();
-                //var data = JsonConvert.SerializeObject(jsonData);
                 var deserializado = JsonConvert.DeserializeObject<AsteroidViewModel>(jsonData);
-                
                 return Ok(deserializado);
+
             }
             else
             {

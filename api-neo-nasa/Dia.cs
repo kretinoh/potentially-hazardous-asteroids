@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace api_neo_nasa
@@ -9,22 +10,22 @@ namespace api_neo_nasa
     {
         [JsonProperty("name")]
         public string nombre { get; set; }
-        public double MyProperty => calculado();
-
-        
+        public double media => Calculado();
         [JsonProperty("estimated_diameter")]
-        [Newtonsoft.Json.JsonIgnore]
-        public Dictionary<string,Dictionary<string,double>> Tamaños { get; set; }
-        
-        public double calculado()
+        private Dictionary<string,Dictionary<string,double>> Tamaños { get; set; }
+
+        public List<CloseApproachDatum> close_approach_data { get; set; }
+
+        public double Calculado()
         {
-            double diametro = 0;
-            foreach(var item in Tamaños.Values.First())
+            var kilometers = Tamaños["kilometers"];
+            double total = 0;
+            foreach (var k in kilometers)
             {
-                diametro += item.Value;
+                total += k.Value;
 
             }
-            return diametro / 2;
+            return total;
         }
     }
 }

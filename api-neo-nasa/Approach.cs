@@ -1,7 +1,10 @@
-﻿namespace api_neo_nasa
+﻿using Newtonsoft.Json;
+
+namespace api_neo_nasa
 {
     public class Approach
     {
-        public Array[] MyProperty { get; set; }
+        [JsonProperty("close_approach_date")]
+        public string close_approach_date { get; set; }
     }
 }
