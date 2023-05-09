@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 
-namespace api_neo_nasa
+namespace api_neo_nasa.Models
 {
-    public class AsteroidViewModel
+    public class NEOModel
     {
         [JsonProperty("near_earth_objects")]
-        public Dictionary<string, Dia[]> Objects{ get; set; }
+        public Dictionary<string, Day[]> Objects { get; set; }
+
     }
 }
