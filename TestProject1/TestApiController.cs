@@ -1,11 +1,9 @@
 using api_neo_nasa.Controllers;
 using api_neo_nasa.Services.Interface;
 using api_neo_nasa.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using api_neo_nasa.Models;
 using Newtonsoft.Json;
-using System.Text.Json.Nodes;
 
 namespace TestApiNEO
 {
