@@ -1,4 +1,5 @@
 ﻿using api_neo_nasa.Models;
+using api_neo_nasa.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
@@ -10,10 +11,14 @@ namespace api_neo_nasa.Controllers
     [Route("asteroids")]
     public class AsteroidsController : ControllerBase
     {
-        // Guardo estos datos para acceder a ellos desde cada controlador si la aplicación creciese.
-        const string API_URL = "https://api.nasa.gov/neo/rest/v1/feed";
-        private readonly string PERSONAL_KEY = "sODHDFXQESqJQXNkwuXbOcea3h0K1MX5ydKTvIwi";
-        private readonly string DEMO_KEY = "DEMO_KEY";
+        private readonly IAsteroidServices _asteroidServices;
+        private readonly HttpClient _httpClient;
+
+        public AsteroidsController(IAsteroidServices asteroidServices, HttpClient httpClient)
+        {
+            this._asteroidServices = asteroidServices;
+            _httpClient = httpClient;
+        }
 
         [HttpGet]
         public virtual async Task<IActionResult> Get([Required(ErrorMessage ="El campo days es requerido")]
@@ -23,55 +28,38 @@ namespace api_neo_nasa.Controllers
             try
             {
                 CheckParameter(days); // This method is used to check the posibly errors and throw exception
-                string url = GenerateParametersUrl(days,PERSONAL_KEY);
+                string url = _asteroidServices.GenerateUrlPersonal(days);
 
-                HttpClient client = new();
-                var response = await client.GetAsync(url);
+                var response = await _httpClient.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
                 {
                     // If the response returns a 200 code i take de data and deserialize it into my model.
                     var jsonBody = await response.Content.ReadAsStringAsync();
-                    var deserializedData = JsonConvert.DeserializeObject<NEOModel>(jsonBody);
-                    List<NEODTO> AsteroidsList = new(); // This List is used to save all AsteroidsDTO that were gona declare
-                    foreach (var item in deserializedData.Objects)
-                    {
-                        foreach (var day in item.Value)
-                        {
-                            if (day.Dangerous) // We only gonna display to the user the top 3 dangerous new earth objects order by descending mean
-                            {
-                                AsteroidsList.Add(new NEODTO
-                                {
-                                    Name = day.Name,
-                                    Mean = day.Mean,
-                                    Speed = day.Speed,
-                                    Date = day.Date,
-                                    Planet = day.Planet
-                                });
 
-                            }
-                        }
-                    }
-                    return Ok(AsteroidsList.OrderByDescending(x => x.Mean)
-                        .Take(3));
+                    var deserializedData = JsonConvert.DeserializeObject<NEOModel>(jsonBody);
+
+                    var result = _asteroidServices.GetOcurrencesOrdererBySize(deserializedData);
+
+                    return Ok(jsonBody);
                 }
                 else
                 {
-                    return BadRequest(response);
+                    throw new Exception($"Ha ocurrido un error: {response.StatusCode}");
                 }
+            }
+            catch (ArgumentNullException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                return BadRequest(e.Message);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-
-        private static string GenerateParametersUrl(string days, string KEY)
-        {
-            string startDate = $"?start_date={DateTime.Today:yyyy-MM-dd}";
-            string endDate = $"&end_date={DateTime.Today.AddDays(Int32.Parse(days)):yyyy-MM-dd}";
-            return $"{API_URL}{startDate}{endDate}&api_key={KEY}";
         }
 
         private static void CheckParameter(string days)
