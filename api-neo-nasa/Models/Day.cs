@@ -10,7 +10,7 @@ namespace api_neo_nasa.Models
         [JsonProperty("name")]
         public string Name { get; set; }
         [JsonPropertyName("description")]
-        public double Mean => CalculateMean();
+        public double Average => CalculateAverage();
         [JsonProperty("is_potentially_hazardous_asteroid")]
         public bool Dangerous { get; set; }
         public string Date => GetApproachData()[0];
@@ -24,7 +24,7 @@ namespace api_neo_nasa.Models
 
         // Functions
 
-        public double CalculateMean()
+        public double CalculateAverage()
         {
             var kilometers = Measures["kilometers"];
             double total = 0;

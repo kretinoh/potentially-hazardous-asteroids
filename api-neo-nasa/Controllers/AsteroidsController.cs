@@ -41,7 +41,7 @@ namespace api_neo_nasa.Controllers
 
                     var result = _asteroidServices.GetOcurrencesOrdererBySize(deserializedData);
 
-                    return Ok(jsonBody);
+                    return Ok(result);
                 }
                 else
                 {

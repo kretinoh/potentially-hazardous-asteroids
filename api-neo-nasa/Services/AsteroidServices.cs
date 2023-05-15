@@ -18,7 +18,7 @@ namespace api_neo_nasa.Services
                         AsteroidsList.Add(new NEODTO
                         {
                             Name = day.Name,
-                            Mean = day.Mean,
+                            Average = day.Average,
                             Speed = day.Speed,
                             Date = day.Date,
                             Planet = day.Planet
@@ -27,7 +27,7 @@ namespace api_neo_nasa.Services
                     }
                 }
             }
-            return AsteroidsList.OrderByDescending(x => x.Mean).Take(3).ToList();
+            return AsteroidsList.OrderByDescending(x => x.Average).Take(3).ToList();
         }
 
         private static List<string> MakeUrlVariables(string days)

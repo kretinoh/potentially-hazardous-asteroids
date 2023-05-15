@@ -7,7 +7,7 @@ namespace api_neo_nasa.Models
         [JsonPropertyName("nombre")]
         public string Name { get; set; }
         [JsonPropertyName("diametro")]
-        public double Mean { get; set; }
+        public double Average { get; set; }
         [JsonPropertyName("velocidad")]
         public string Speed { get; set; }
         [JsonPropertyName("fecha")]
