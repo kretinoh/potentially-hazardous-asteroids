@@ -20,6 +20,7 @@ namespace api_neo_nasa.Controllers
             _httpClient = httpClient;
         }
 
+        //TODO: los mensajes de error se devuelven en texto plano, devuélvelos en formato json
         [HttpGet]
         public virtual async Task<IActionResult> Get([Required(ErrorMessage ="El campo days es requerido")]
                                                 string days)
@@ -34,6 +35,7 @@ namespace api_neo_nasa.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
+                    //TODO: en la arquitectura que estás usando la llamada a la api de la nasa debe de hacerse en el servicio
                     // If the response returns a 200 code i take de data and deserialize it into my model.
                     var jsonBody = await response.Content.ReadAsStringAsync();
 
@@ -62,6 +64,8 @@ namespace api_neo_nasa.Controllers
             }
         }
 
+        //TODO: en el controlador sólo debe haber endpoints, extraelo a una clase de utils o usa la solución
+        //que creas conveniente
         private static void CheckParameter(string days)
         {
             int parsedDay = int.Parse(days);

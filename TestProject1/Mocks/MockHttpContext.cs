@@ -10,10 +10,14 @@ namespace TestApiNEO.Mocks
 {
     public class MockHttpContext
     {
+        //TODO: Sólo pruebas los códigos de respuesta, la gracia de mockear es que
+        //pruebes que obtienes los objetos con las mismas propiedades que en el json
         [Test]
         public async Task MockTest_DaysNumberOk_ReturnsOkObjectResult()
         {
-            string jsonContent = File.ReadAllText("C:\\Users\\RAFAEL.MAESTRE\\source\\repos\\PruebaNET\\TestProject1\\Mocks\\Resources\\ResponseBody.json");
+            //TODO: declaras la misma string en 2 métodos, extráela
+            //TODO: rutas absolutas no, rutas relativas
+            string jsonContent = File.ReadAllText("C:\\Users\\JAVIER.ALVAREZCUEV\\RAFApotentially-hazardous-asteroids\\TestProject1\\Mocks\\Resources\\ResponseBody.json");
             var handleMock = new Mock<HttpMessageHandler>();
             var response = new HttpResponseMessage
             {
@@ -44,7 +48,7 @@ namespace TestApiNEO.Mocks
         [Test]
         public async Task MockTest_DaysNumberOutOfBounds_ReturnsBadRequest()
         {
-            string jsonContent = File.ReadAllText("C:\\Users\\RAFAEL.MAESTRE\\source\\repos\\PruebaNET\\TestProject1\\Mocks\\Resources\\ResponseBody.json");
+            string jsonContent = File.ReadAllText("C:\\Users\\JAVIER.ALVAREZCUEV\\RAFApotentially-hazardous-asteroids\\TestProject1\\Mocks\\Resources\\ResponseBody.json");
             var handleMock = new Mock<HttpMessageHandler>();
             var response = new HttpResponseMessage
             {

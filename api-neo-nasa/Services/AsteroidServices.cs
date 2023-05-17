@@ -54,6 +54,7 @@ namespace api_neo_nasa.Services
             return $"{GetBaseUrl()}{MakeUrlVariables(days)[0]}{MakeUrlVariables(days)[1]}&api_key={GetDemoKey()}";
         }
 
+        //TODO: no hardcodees
         private static string GetPersonalKey()
         {
             return "sODHDFXQESqJQXNkwuXbOcea3h0K1MX5ydKTvIwi";

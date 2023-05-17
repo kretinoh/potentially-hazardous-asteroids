@@ -2,6 +2,7 @@
 
 namespace api_neo_nasa.Models
 {
+    //TODO: los dtos y los modelos de deserialización de json deben estar en carpetas separadas
     public class NEODTO
     {
         [JsonPropertyName("nombre")]

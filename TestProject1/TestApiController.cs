@@ -62,6 +62,9 @@ namespace TestApiNEO
          * Services test
          * 
          */
+        //TODO: esto se debe hacer en los test de mock, no en los unitarios, de hecho los casos
+        //que te faltan en los test de mock son relacionados con este.
+        //TODO: nunca se hardcodea un json
         [Test]
         public void GetOcurrencesOrdererBySizeMethod_ValidParameter_ReturnsList()
         {
