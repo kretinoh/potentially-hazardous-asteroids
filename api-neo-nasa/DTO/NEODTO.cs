@@ -1,8 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace api_neo_nasa.Models
+namespace api_neo_nasa.DTO
 {
     //TODO: los dtos y los modelos de deserialización de json deben estar en carpetas separadas
+    //FIXED
     public class NEODTO
     {
         [JsonPropertyName("nombre")]

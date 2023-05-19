@@ -3,12 +3,11 @@ using api_neo_nasa.Services;
 using api_neo_nasa.Services.Interface;
 using api_neo_nasa.Utils;
 using api_neo_nasa.Utils.Interface;
-using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
+var personalKey = builder.Configuration["API_KEY"];
 
 // Add services to the container.
-
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -17,8 +16,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IAsteroidServices,AsteroidServices>();
 builder.Services.AddTransient<IUtils,Utils>();
 builder.Services.AddHttpClient();
-var app = builder.Build();
 
+var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

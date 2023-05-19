@@ -2,6 +2,7 @@
 {
     public interface IUtils
     {
+        void CheckParameter(string days);
         string MakeExceptionMessageJSON(string exceptionMessage);
     }
 }

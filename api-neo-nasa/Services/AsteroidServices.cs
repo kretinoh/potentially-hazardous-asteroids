@@ -1,10 +1,27 @@
 ﻿using api_neo_nasa.Models;
 using api_neo_nasa.Services.Interface;
+using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
+using api_neo_nasa.DTO;
 
 namespace api_neo_nasa.Services
 {
     public class AsteroidServices : IAsteroidServices
     {
+        private readonly IConfiguration _configuration;
+
+        public AsteroidServices(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public List<NEODTO> FromResponseReturnListOfModel(HttpResponseMessage httpResponseMessage)
+        {
+            var jsonBody = httpResponseMessage.Content.ReadAsStringAsync().Result;
+            var deserialized = JsonConvert.DeserializeObject<NEOModel>(jsonBody);
+            return GetOcurrencesOrdererBySize(deserialized);
+        }
+
         public List<NEODTO> GetOcurrencesOrdererBySize(NEOModel model)
         {
             List<NEODTO> AsteroidsList = new(); // This List is used to save all AsteroidsDTO that were gona declare
@@ -46,26 +63,16 @@ namespace api_neo_nasa.Services
 
         public string GenerateUrlPersonal(string days)
         {
-            return $"{GetBaseUrl()}{MakeUrlVariables(days)[0]}{MakeUrlVariables(days)[1]}&api_key={GetPersonalKey()}";
+            return $"{_configuration["BASE_URL"]}{MakeUrlVariables(days)[0]}{MakeUrlVariables(days)[1]}&api_key={_configuration["API_KEY"]}";
         }
 
         public string GenerateUrlDemo(string days)
         {
-            return $"{GetBaseUrl()}{MakeUrlVariables(days)[0]}{MakeUrlVariables(days)[1]}&api_key={GetDemoKey()}";
+            
+            return $"{_configuration["BASE_URL"]}{MakeUrlVariables(days)[0]}{MakeUrlVariables(days)[1]}&api_key={_configuration["API_KEY"]}";
         }
 
         //TODO: no hardcodees
-        private static string GetPersonalKey()
-        {
-            return "sODHDFXQESqJQXNkwuXbOcea3h0K1MX5ydKTvIwi";
-        }
-        private static string GetDemoKey()
-        {
-            return "DEMO_KEY";
-        }
-        private static string GetBaseUrl()
-        {
-            return "https://api.nasa.gov/neo/rest/v1/feed";
-        }
+        //FIXED (Ahora hago uso de secrets.json)
     }
 }
