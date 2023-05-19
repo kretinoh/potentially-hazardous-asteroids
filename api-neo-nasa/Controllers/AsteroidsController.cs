@@ -3,6 +3,7 @@ using api_neo_nasa.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using api_neo_nasa.Utils.Interface;
 
 
 namespace api_neo_nasa.Controllers
@@ -13,11 +14,13 @@ namespace api_neo_nasa.Controllers
     {
         private readonly IAsteroidServices _asteroidServices;
         private readonly HttpClient _httpClient;
+        private readonly IUtils _util;
 
-        public AsteroidsController(IAsteroidServices asteroidServices, HttpClient httpClient)
+        public AsteroidsController(IAsteroidServices asteroidServices, HttpClient httpClient, IUtils util)
         {
             this._asteroidServices = asteroidServices;
             _httpClient = httpClient;
+            this._util = util;
         }
 
         //TODO: los mensajes de error se devuelven en texto plano, devuélvelos en formato json
@@ -52,15 +55,15 @@ namespace api_neo_nasa.Controllers
             }
             catch (ArgumentNullException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(_util.MakeExceptionMessageJSON(e.Message));
             }
             catch (ArgumentOutOfRangeException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(_util.MakeExceptionMessageJSON(e.Message));
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(_util.MakeExceptionMessageJSON(e.Message));
             }
         }
 
